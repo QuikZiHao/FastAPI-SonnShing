@@ -5,6 +5,8 @@ import domain.models as models
 from base.bases import *
 #sql services
 from controller.document_controller import router as document_router
+from controller.outlet_controller import router as outlet_router
+from controller.access_controller import router as access_router
 #sql connect
 from database import engine,SessionLocal
 from sqlalchemy.orm import Session
@@ -18,7 +20,9 @@ models.Base.metadata.create_all(bind=engine)
 
 
 # Include routers
-app.include_router(document_router, prefix="/documents", tags=["documents"])
+app.include_router(document_router, prefix="", tags=["Document"])
+app.include_router(outlet_router, prefix="", tags=["Outlet"])
+app.include_router(access_router, prefix="", tags=["Access"])
 #app.include_router(user_router, prefix="/users", tags=["users"])
 
 if __name__ == '__main__':
