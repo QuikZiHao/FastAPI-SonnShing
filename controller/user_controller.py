@@ -1,7 +1,7 @@
 from fastapi import APIRouter, HTTPException, Depends, Query,status
 from typing import List,Optional
-from domain.models import DocumentEntity
-from base.bases import DocumentBase
+from domain.models import UserEntity
+from base.bases import UserBase
 from database import SessionLocal
 from sqlalchemy.orm import Session
 import services.user_services as userServices
@@ -28,7 +28,7 @@ async def create_user(user:UserBase):
     userServices.add_user(user=user)
 
 @router.post('/docList/',status_code=status.HTTP_202_CREATED)
-async def create_users_list(users:List[userBase]):
+async def create_users_list(users:List[UserBase]):
     userServices.add_userList(users=users)
 
 @router.get('/doc/{doc_id}',status_code=status.HTTP_200_OK)
