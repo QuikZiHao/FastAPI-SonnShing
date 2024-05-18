@@ -1,6 +1,7 @@
 from fastapi import APIRouter, HTTPException, Depends, Query,status
 from typing import List
-from domain.models import DocumentEntity
+from domain.models import DocumentEntity,OutletEntity
+from services.outlet_services import OutletEntity
 from base.bases import DocumentBase
 from database import SessionLocal
 from sqlalchemy.orm import Session
@@ -28,9 +29,19 @@ def add_documentList(documents:List[DocumentBase]):
         db.add(db_doc)
     db.commit()
 
-def find_docements_by_id(doc_id:int):
+def find_docements(start_date,end_date,branch):
     db = next(get_db())
-    doc = db.query(DocumentEntity).filter(DocumentEntity.id == doc_id).first()
+    
+    # Query database to get documents within the date range
+    documents = db.query(DocumentEntity)
+    if start_date is not None:
+        documents = documents.filter(DocumentEntity.date >= start_date)
+    if end_date is not None:
+        documents = documents.filter(DocumentEntity.date <= end_date)
+    if branch != None:
+        documents = documents.filter(DocumentEntity.date <= end_date)
+    documents = documents.all()
+    return documents
     return doc
 
 def find_document_by_date(start_date:datetime.date=None,end_date:datetime.date=None):
